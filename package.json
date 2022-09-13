@@ -1,0 +1,43 @@
+{
+  "name": "react-simple-http",
+  "version": "1.0.0",
+  "description": "Lightweight React library enabling (really) simple data fetching by combining the better of imperative & declarative paradigms",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "exports": {
+    "require": "./dist/index.cjs",
+    "import": "./dist/index.mjs",
+    "module": "./dist/index.esm.js"
+  },
+  "scripts": {
+    "build": "bunchee ./src/index.js",
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devdufutur/react-simple-http.git"
+  },
+  "keywords": [
+    "react",
+    "javascript",
+    "fetch",
+    "api",
+    "http",
+    "library",
+    "declarative",
+    "imperative"
+  ],
+  "author": "DevDuFutur (Rudy Nappée)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/devdufutur/react-simple-http/issues"
+  },
+  "homepage": "https://github.com/devdufutur/react-simple-http#readme",
+  "devDependencies": {
+    "bunchee": "^2.1.2",
+    "vitest": "^0.23.2"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^3.6.2"
+  }
+}
