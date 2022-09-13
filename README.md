@@ -1,2 +1,2 @@
 # react-simple-http
-The association of imperative &amp; declarative worlds to simplify data fetching in React
+ Lightweight React library enabling (really) simple data fetching by combining the better of imperative & declarative paradigms.
