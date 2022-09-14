@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { forwardRef, useContext, useEffect, useImperativeHandle, useRef } from "react";
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef } from "react";
 import { HttpApiContext } from "./HttpApiConfiguration";
 
 const serializePayloadIfNeeded = payload => {
