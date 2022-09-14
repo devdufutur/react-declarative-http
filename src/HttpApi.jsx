@@ -4,7 +4,6 @@ import React, {
   isValidElement,
   useImperativeHandle,
   useRef,
-  Children,
   useContext,
 } from "react";
 import PropTypes from "prop-types";
@@ -20,7 +19,7 @@ const HttpApi = forwardRef(({ baseUrl, fetchParams = {}, children }, ref) => {
 
   useImperativeHandle(ref, () =>
     Object.fromEntries(
-      Children.map(children, (element) => element)
+      React.Children.map(children, (element) => element)
         .filter((element) => isValidElement(element))
         .filter((element) => element.type.displayName === "HttpEndpoint")
         .map((element) => [
@@ -39,7 +38,7 @@ const HttpApi = forwardRef(({ baseUrl, fetchParams = {}, children }, ref) => {
         fetchParams: { ...contextFetchParams, ...fetchParams },
       }}
     >
-      {Children.map(children, (element) => element)
+      {React.Children.map(children, (element) => element)
         .filter((element) => isValidElement(element))
         .filter((element) => element.type.displayName === "HttpEndpoint")
         .map((element) =>

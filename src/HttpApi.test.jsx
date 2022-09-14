@@ -20,113 +20,7 @@ const mockApi = setupServer(
   }),
   rest.get("http://localhost:3000/api/lisst", (req, res, ctx) => {
     return res(ctx.status(400), ctx.text("Not found"));
-  }),
-  // évt classé
-  rest.get(
-    "http://localhost:3000/api/sinistres/M333333333H",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(400),
-        ctx.json({
-          message: "Mission REN impossible - Evènement classé",
-        })
-      );
-    }
-  ),
-  // évt initié
-  rest.get(
-    "http://localhost:3000/api/sinistres/M220455143J",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          message: "Mission REN impossible - Evènement initié",
-        })
-      );
-    }
-  ),
-  // évt non répertorié
-  rest.get(
-    "http://localhost:3000/api/sinistres/M444444444J",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          message: "Evénement non répertorié",
-        })
-      );
-    }
-  ),
-  // évt refus prise en charge
-  rest.get(
-    "http://localhost:3000/api/sinistres/M220466249T",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          message: "Mission REN impossible - Evénement RPC",
-        })
-      );
-    }
-  ),
-  // évt lieu sinistré à l'étranger
-  rest.get(
-    "http://localhost:3000/api/sinistres/M220493739B",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          message: "Mission REN impossible - Lieu sinistré à l'étranger",
-        })
-      );
-    }
-  ),
-  // évt lieu sinistré armée
-  rest.get(
-    "http://localhost:3000/api/sinistres/M220469573P",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          message:
-            "Mission REN impossible - Lieu sinistré ARMEES (Zone Franche Activités)",
-        })
-      );
-    }
-  ),
-  // évt abscence adresse lieu sinistré
-  rest.get(
-    "http://localhost:3000/api/sinistres/M220446945D",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          message: "Mission REN impossible - Absence adresse lieu sinistré",
-        })
-      );
-    }
-  ),
-  //évt sans REN/RDF
-  rest.get(
-    "http://localhost:3000/api/sinistres/M220519133J",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          message:
-            "Mission REN impossible - Absence prestation Réparation En Nature ou Recherche De Fuite acceptée ou en attente",
-        })
-      );
-    }
-  ),
-
-  // contrôle de l'autorisation à débrancher sur misren
-  rest.post(
-    "http://localhost:3000/api/sinistres/estAutoriseDebranchementMisren",
-    (req, res, ctx) => {
-      return res(ctx.status(204));
-    }
-  )
+  })
 );
 
 beforeAll(() => {
@@ -140,20 +34,22 @@ afterAll(() => {
   mockApi.close();
 });
 
-describe("HttpEndpoint", () => {
+describe("HttpApi", () => {
   test("Simple GET request, without any parameter, HTTP 200", async () => {
     const TestComponent = () => {
-      const httpEndpoint = useRef();
+      const httpApi = useRef();
       const [people, setPeople] = useState([]);
       return (
         <>
-          <HttpEndpoint
-            ref={httpEndpoint}
-            verb="GET"
-            url="/api/list"
-            onHttpOk={setPeople}
-          />
-          <button onClick={() => httpEndpoint.current.fetch()}>Fetch</button>
+          <HttpApi ref={httpApi}>
+            <HttpEndpoint
+              name="getPeople"
+              verb="GET"
+              url="/api/list"
+              onHttpOk={setPeople}
+            />
+          </HttpApi>
+          <button onClick={() => httpApi.current.getPeople()}>Fetch</button>
           <ul>
             {people.map(({ name }) => (
               <li key={name}>{name}</li>
@@ -176,17 +72,19 @@ describe("HttpEndpoint", () => {
 
   test("Simple GET request, without any parameter, HTTP 404", async () => {
     const TestComponent = () => {
-      const httpEndpoint = useRef();
+      const httpApi = useRef();
       const [error, setError] = useState();
       return (
         <>
-          <HttpEndpoint
-            ref={httpEndpoint}
-            verb="GET"
-            url="/api/lisst"
-            onHttpError={setError}
-          />
-          <button onClick={() => httpEndpoint.current.fetch()}>Fetch</button>
+          <HttpApi ref={httpApi}>
+            <HttpEndpoint
+              name="getPeople"
+              verb="GET"
+              url="/api/lisst"
+              onHttpError={setError}
+            />
+          </HttpApi>
+          <button onClick={() => httpApi.current.getPeople()}>Fetch</button>
           {error && <p>Error : {error}</p>}
         </>
       );
@@ -200,22 +98,20 @@ describe("HttpEndpoint", () => {
 
   test("Simple GET request, without any parameter, request failed", async () => {
     const TestComponent = () => {
-      const httpEndpoint = useRef();
+      const httpApi = useRef();
       const [error, setError] = useState();
       return (
         <>
-          <HttpEndpoint
-            ref={httpEndpoint}
-            verb="GET"
-            url="/api/listt"
-            onFailure={(e) => setError(e.message)}
-          />
-          <button onClick={() => httpEndpoint.current.fetch()}>Fetch</button>
-          {error && (
-            <p>
-              Error : {error}
-            </p>
-          )}
+          <HttpApi ref={httpApi}>
+            <HttpEndpoint
+              name="getPeople"
+              verb="GET"
+              url="/api/lisst"
+              onHttpError={setError}
+            />
+          </HttpApi>
+          <button onClick={() => httpApi.current.getPeople()}>Fetch</button>
+          {error && <p>Error : {error}</p>}
         </>
       );
     };

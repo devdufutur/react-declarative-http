@@ -1,12 +1,14 @@
 {
   "name": "react-declarative-http",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Lightweight React library enabling (really) simple data fetching by combining the better of imperative & declarative paradigms",
   "browserslist": [
     "Firefox 58",
     "Chrome 66"
   ],
-  "files": ["dist/*"],
+  "files": [
+    "dist/*"
+  ],
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "exports": {
@@ -16,14 +18,15 @@
     }
   },
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm ",
+    "build": "bunchee ./src/index.js",
+    "babelBuild": "npm run build:cjs && npm run build:esm ",
     "test": "vitest",
     "build:cjs": "babel ./src -x .js,.jsx --out-dir ./dist/cjs --env-name cjs --delete-dir-on-start",
     "build:esm": "babel ./src -x .js,.jsx --out-dir ./dist/esm --env-name esm --delete-dir-on-start"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devdufutur/react-simple-http.git"
+    "url": "git+https://github.com/devdufutur/react-declarative-http.git"
   },
   "keywords": [
     "react",
@@ -38,9 +41,9 @@
   "author": "DevDuFutur (Rudy Nappée)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/devdufutur/react-simple-http/issues"
+    "url": "https://github.com/devdufutur/react-declarative-http/issues"
   },
-  "homepage": "https://github.com/devdufutur/react-simple-http#readme",
+  "homepage": "https://github.com/devdufutur/react-declarative-http#readme",
   "devDependencies": {
     "@babel/cli": "7.17.6",
     "@babel/core": "7.17.8",
@@ -51,6 +54,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@vitejs/plugin-react": "^2.1.0",
+    "bunchee": "^2.1.2",
     "jsdom": "^20.0.0",
     "msw": "^0.47.0",
     "react": "^18.2.0",
