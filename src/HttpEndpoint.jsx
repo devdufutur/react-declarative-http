@@ -1,8 +1,14 @@
 import PropTypes from "prop-types";
-import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef } from "react";
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import { HttpApiContext } from "./HttpApiConfiguration";
 
-const serializePayloadIfNeeded = payload => {
+const serializePayloadIfNeeded = (payload) => {
   if (
     typeof payload !== "object" ||
     payload instanceof Blob ||
@@ -14,7 +20,7 @@ const serializePayloadIfNeeded = payload => {
   return JSON.stringify(payload);
 };
 
-const payloadContentType = payload => {
+const payloadContentType = (payload) => {
   if (typeof payload === "object") {
     if (payload instanceof Blob) {
       return payload.type;
@@ -28,8 +34,8 @@ const payloadContentType = payload => {
   return "text/plain";
 };
 
-const getContent = async resp => {
-  const contentType = resp.headers.get("content-type");
+const getContent = async (resp) => {
+  const [contentType] = (resp.headers.get("content-type") ?? "").split(";");
   switch (contentType) {
     case "multipart/form-data":
       return await resp.formData();
@@ -53,9 +59,22 @@ const useMounted = () => {
 };
 
 const HttpEndpoint = forwardRef(
-  ({ verb, url, fetchParams = {}, autoLoad = false, onBeforeRequest, onHttpOk, onHttpError, onFailure }, ref) => {
+  (
+    {
+      verb,
+      url,
+      fetchParams = {},
+      autoLoad = false,
+      onBeforeRequest,
+      onHttpOk,
+      onHttpError,
+      onFailure,
+    },
+    ref
+  ) => {
     const mounted = useMounted();
-    const { baseUrl: contextBaseUrl, fetchParams: contextFetchParams } = useContext(HttpApiContext);
+    const { baseUrl: contextBaseUrl, fetchParams: contextFetchParams } =
+      useContext(HttpApiContext);
 
     // GET or HEAD : URL params as single argument
     // others verbs : payload as first argument, URL params as second
@@ -107,7 +126,7 @@ const HttpEndpoint = forwardRef(
       if (autoLoad) {
         fetchData.current(autoLoad);
       }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(autoLoad)]);
 
     useImperativeHandle(ref, () => ({
@@ -115,7 +134,7 @@ const HttpEndpoint = forwardRef(
     }));
 
     return null;
-  },
+  }
 );
 
 HttpEndpoint.propTypes = {
