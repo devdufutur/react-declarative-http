@@ -1,26 +1,16 @@
 {
   "name": "react-declarative-http",
-  "version": "0.0.14",
-  "type": "module",
+  "version": "0.0.15",
   "description": "Lightweight React library enabling (really) simple data fetching by combining the better of imperative & declarative paradigms",
-  "browserslist": [
-    "Firefox 58",
-    "Chrome 66"
-  ],
   "files": [
     "dist/*"
   ],
-  "exports": {
-    "require": "./dist/index.cjs",
-    "import": "./dist/index.mjs",
-    "module": "./dist/index.esm.js"
-  },
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "sideEffects": false,
   "scripts": {
     "build": "bunchee ./src/index.js",
-    "babelbuild": "npm run build:esm",
-    "test": "vitest",
-    "build:cjs": "babel ./src -x .js,.jsx --out-dir ./dist/cjs --env-name cjs --delete-dir-on-start",
-    "build:esm": "babel ./src -x .js,.jsx --out-dir ./dist/esm --env-name esm --delete-dir-on-start"
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -43,11 +33,6 @@
   },
   "homepage": "https://github.com/devdufutur/react-declarative-http#readme",
   "devDependencies": {
-    "@babel/cli": "7.17.6",
-    "@babel/core": "7.17.8",
-    "@babel/eslint-parser": "7.17.0",
-    "@babel/preset-env": "7.16.11",
-    "@babel/preset-react": "7.16.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

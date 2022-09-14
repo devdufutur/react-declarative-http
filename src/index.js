@@ -1,5 +1,3 @@
-import HttpApi from "./HttpApi.js";
-import HttpApiConfigurator from "./HttpApiConfiguration.js";
-import HttpEndpoint from "./HttpEndpoint.js";
-
-export { HttpApi, HttpApiConfigurator, HttpEndpoint };
+export { default as HttpApi } from "./HttpApi.js";
+export { default as HttpApiConfigurator } from "./HttpApiConfiguration.js";
+export { default as HttpEndpoint } from "./HttpEndpoint.js";
