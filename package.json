@@ -11,9 +11,7 @@
   ],
   "module": "./dist/esm/index.js",
   "exports": {
-    ".": {
-      "import": "./dist/esm/index.js"
-    }
+    "import": "./dist/esm/index.js"
   },
   "scripts": {
     "buncheeBuild": "bunchee ./src/index.js",
