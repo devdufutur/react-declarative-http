@@ -19,7 +19,7 @@ const HttpApi = forwardRef(({ baseUrl, fetchParams = {}, children }, ref) => {
 
   useImperativeHandle(ref, () =>
     Object.fromEntries(
-      React.Children.map(children, (element) => element)
+      React.Children.map(children ?? [], (element) => element)
         .filter((element) => isValidElement(element))
         .filter((element) => element.type.displayName === "HttpEndpoint")
         .map((element) => [
@@ -38,7 +38,7 @@ const HttpApi = forwardRef(({ baseUrl, fetchParams = {}, children }, ref) => {
         fetchParams: { ...contextFetchParams, ...fetchParams },
       }}
     >
-      {React.Children.map(children, (element) => element)
+      {React.Children.map(children ?? [], (element) => element)
         .filter((element) => isValidElement(element))
         .filter((element) => element.type.displayName === "HttpEndpoint")
         .map((element) =>
