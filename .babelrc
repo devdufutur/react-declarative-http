@@ -1,0 +1,14 @@
+{
+  "env": {
+    "esm": {
+      "presets": [["@babel/preset-env", { "modules": false }], "@babel/preset-react"],
+      "plugins": [],
+      "ignore": ["**/*.test.js"]
+    },
+    "cjs": {
+      "presets": [["@babel/preset-env", { "modules": "cjs" }], "@babel/preset-react"],
+      "plugins": [],
+      "ignore": ["**/*.test.js"]
+    }
+  }
+}
