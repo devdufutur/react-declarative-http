@@ -106,8 +106,8 @@ describe("HttpApi", () => {
             <HttpEndpoint
               name="getPeople"
               verb="GET"
-              url="/api/lisst"
-              onHttpError={setError}
+              url="/api/listt"
+              onFailure={(e) => setError(e.message)}
             />
           </HttpApi>
           <button onClick={() => httpApi.current.getPeople()}>Fetch</button>
