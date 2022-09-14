@@ -1,11 +1,12 @@
 {
   "name": "react-declarative-http",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Lightweight React library enabling (really) simple data fetching by combining the better of imperative & declarative paradigms",
   "browserslist": [
     "Firefox 58",
     "Chrome 66"
   ],
+  "files": ["dist/*"],
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "exports": {
