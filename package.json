@@ -1,6 +1,6 @@
 {
   "name": "react-declarative-http",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "type": "module",
   "description": "Lightweight React library enabling (really) simple data fetching by combining the better of imperative & declarative paradigms",
   "browserslist": [
@@ -17,8 +17,8 @@
     }
   },
   "scripts": {
-    "build": "bunchee ./src/index.js",
-    "babelBuild": "npm run build:cjs && npm run build:esm",
+    "buncheeBuild": "bunchee ./src/index.js",
+    "build": "npm run build:esm",
     "test": "vitest",
     "build:cjs": "babel ./src -x .js,.jsx --out-dir ./dist/cjs --env-name cjs --delete-dir-on-start",
     "build:esm": "babel ./src -x .js,.jsx --out-dir ./dist/esm --env-name esm --delete-dir-on-start"
