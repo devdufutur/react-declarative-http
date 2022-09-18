@@ -8,6 +8,8 @@ import React, {
 } from "react";
 import { HttpApiContext } from "./HttpApiConfiguration";
 
+import "whatwg-fetch";
+
 const serializePayloadIfNeeded = (payload) => {
   if (
     typeof payload !== "object" ||
@@ -61,14 +63,15 @@ const useMounted = () => {
 const HttpEndpoint = forwardRef(
   (
     {
-      verb,
       url,
+      verb = "GET",
       fetchParams = {},
       autoLoad = false,
       onBeforeRequest,
       onHttpOk,
       onHttpError,
       onFailure,
+      onFinally,
     },
     ref
   ) => {
@@ -94,7 +97,7 @@ const HttpEndpoint = forwardRef(
         if (typeof onBeforeRequest === "function") {
           onBeforeRequest(...args);
         }
-        const res = await window.fetch(completeUrl, {
+        const response = await window.fetch(completeUrl, {
           ...contextFetchParams,
           ...fetchParams,
           headers: {
@@ -105,26 +108,36 @@ const HttpEndpoint = forwardRef(
           method: verb,
           body: serializePayloadIfNeeded(payload),
         });
-        const content = await getContent(res);
-        if (res.ok) {
+        const content = await getContent(response);
+        if (response.ok) {
           if (mounted.current && typeof onHttpOk === "function") {
-            onHttpOk(content, ...args);
+            onHttpOk(content, response, ...args);
           }
         } else {
           if (mounted.current && typeof onHttpError === "function") {
-            onHttpError(content, ...args);
+            onHttpError(content, response, ...args);
           }
         }
       } catch (e) {
         if (mounted.current && typeof onFailure === "function") {
           onFailure(e, ...args);
         }
+      } finally {
+        if (mounted.current && typeof onFinally === "function") {
+          onFinally(...args);
+        }
       }
     });
 
     useEffect(() => {
       if (autoLoad) {
-        fetchData.current(autoLoad);
+        if (Array.isArray(autoLoad)) {
+          fetchData.current(...autoLoad);
+        } else if (typeof autoLoad === "object") {
+          fetchData.current(autoLoad);
+        } else {
+          fetchData.current();
+        }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(autoLoad)]);
@@ -138,15 +151,20 @@ const HttpEndpoint = forwardRef(
 );
 
 HttpEndpoint.propTypes = {
-  name: PropTypes.string.isRequired,
-  verb: PropTypes.string.isRequired,
-  url: PropTypes.string,
+  url: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  verb: PropTypes.string,
   fetchParams: PropTypes.object,
-  autoLoad: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  autoLoad: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.object,
+    PropTypes.array,
+  ]),
   onBeforeRequest: PropTypes.func,
   onHttpOk: PropTypes.func,
   onHttpError: PropTypes.func,
   onFailure: PropTypes.func,
+  onFinally: PropTypes.func,
 };
 
 HttpEndpoint.displayName = "HttpEndpoint";

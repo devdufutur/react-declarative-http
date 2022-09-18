@@ -1,12 +1,16 @@
 {
   "name": "react-declarative-http",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Lightweight React library enabling (really) simple data fetching by combining the better of imperative & declarative paradigms",
   "files": [
     "dist/*"
   ],
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
+  "exports": {
+    "require": "./dist/index.cjs.js",
+    "module": "./dist/index.esm.js"
+  },
   "sideEffects": false,
   "scripts": {
     "build": "bunchee ./src/index.js",
