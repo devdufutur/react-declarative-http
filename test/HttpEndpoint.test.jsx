@@ -1,7 +1,4 @@
 import {
-  beforeAll,
-  afterEach,
-  afterAll,
   describe,
   test,
   expect,
@@ -9,74 +6,11 @@ import {
 } from "vitest";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { setupServer } from "msw/node";
-import { rest } from "msw";
 
 import HttpEndpoint from "../src/HttpEndpoint";
 import { useRef, useState } from "react";
 
 // import "whatwg-fetch";
-
-const apiCharacters = {
-  anime: [
-    { id: "1", name: "Homer Simpson" },
-    { id: "2", name: "Randy Marsch" },
-    { id: "3", name: "Stan Smith" },
-  ],
-  live: [
-    { id: "1", name: "Dwight Schrute" },
-    { id: "2", name: "Ted Mosby" },
-    { id: "3", name: "Chandler Bing" },
-  ],
-};
-
-const mockApi = setupServer(
-  rest.get("http://localhost:3000/api/characters/:type", (req, res, ctx) => {
-    return res(ctx.json(apiCharacters[req.params.type]));
-  }),
-  rest.get(
-    "http://localhost:3000/api/characters/:type/:id",
-    (req, res, ctx) => {
-      return res(
-        ctx.json(
-          apiCharacters[req.params.type].find((c) => c.id === req.params.id)
-        )
-      );
-    }
-  ),
-  rest.post("http://localhost:3000/api/characters", async (req, res, ctx) => {
-    const payload = await req.json();
-    return res(ctx.json({ ok: true, name: payload.name }));
-  }),
-  rest.put(
-    "http://localhost:3000/api/characters/:type/:id",
-    async (req, res, ctx) => {
-      const payload = await req.json();
-      return res(
-        ctx.json({
-          ok: true,
-          name: payload.name,
-          type: req.params.type,
-          id: req.params.id,
-        })
-      );
-    }
-  ),
-  rest.get("http://localhost:3000/api/not_found", (req, res, ctx) => {
-    return res(ctx.status(404), ctx.text("Not found"));
-  })
-);
-
-beforeAll(() => {
-  mockApi.listen({
-    onUnhandledRequest: "error",
-  });
-  window.location.href = "http://localhost:3000";
-});
-afterEach(() => mockApi.resetHandlers());
-afterAll(() => {
-  mockApi.close();
-});
 
 describe("HttpEndpoint", () => {
   test("Simple GET request, without any parameter, HTTP 200", async () => {
@@ -306,7 +240,7 @@ describe("HttpEndpoint", () => {
 
     await waitFor(() => expect(callbacks.onHttpOk).toHaveBeenCalledOnce());
     expect(callbacks.onHttpOk).toHaveBeenCalledWith(
-      apiCharacters.anime,
+      globalThis.apiCharacters.anime,
       expect.objectContaining({ ok: true, status: 200 }) // Response object
     );
 
@@ -444,7 +378,7 @@ describe("HttpEndpoint", () => {
 
     await waitFor(() => expect(callbacks.onHttpOk).toHaveBeenCalledOnce());
     expect(callbacks.onHttpOk).toHaveBeenCalledWith(
-      apiCharacters.anime,
+      globalThis.apiCharacters.anime,
       expect.objectContaining({ ok: true, status: 200 }), // Response obejct
       { type: "anime" }, // 1st argument passed to httpApi.current.fetch()
       "foo", // 2nd argument passed to httpApi.current.fetch()
