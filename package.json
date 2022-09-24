@@ -1,6 +1,6 @@
 {
   "name": "react-declarative-http",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Lightweight React library enabling (really) simple data fetching by combining the better of imperative & declarative paradigms",
   "files": [
     "dist/*"
